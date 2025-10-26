@@ -43,10 +43,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             json_receipe = generate_receipe_json(openai_client, prompt)
             create_receipe(json_receipe)
             clean_environment(metadata.get("audio_path"))
-            await update.channel_post.reply_text(f"🥳 Receta subida a Mealie!")
+            await update.channel_post.reply_text(f"🥳 Receipe uploaded to Mealie!")
         except Exception as e:
             logger.error(f"❌ Process error: {e}")
 
     else:
         logger.error(f"Not a URL")
-        await update.channel_post.reply_text(f"Maldita sea solo funciono con enlaces")
+        await update.channel_post.reply_text(f"❌ The message is not a valid URL")
