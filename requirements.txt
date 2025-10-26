@@ -1,0 +1,9 @@
+elevenlabs==2.20.1
+openai==2.6.1
+openai-whisper==20250625
+python-dotenv==1.1.1
+python-telegram-bot==22.5
+regex==2025.9.18
+requests==2.32.5
+validators==0.35.0
+yt-dlp==2025.10.14
