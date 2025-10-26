@@ -18,11 +18,29 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.info(f"🧲 Starting processing")
 
         try:
+            app_data = context.application.bot_data
+            openai_client = app_data.get("openai_client")
+            elevenlabs_client = app_data.get("elevenlabs_client")
+            whisper_model = app_data.get("whisper_model")
+
             metadata = download_audio_from_url(text)
-            transcription = speech_to_text(metadata.get("audio_path"))
+            audio_path = metadata.get("audio_path")
+
+            if elevenlabs_client:
+                logger.info("🎤 Using ElevenLabs for transcription")
+                transcription = speech_to_text(elevenlabs_client, audio_path)
+            elif whisper_model:
+                logger.info("🎤 Using Whisper for transcription")
+                transcription = whisper_audio(whisper_model, audio_path)
+            else:
+                raise RuntimeError("No transcription client configured")
+
+            if openai_client is None:
+                raise RuntimeError("OpenAI client is not configured")
+
             metadata['transcription'] = transcription
             prompt = parse_prompt(metadata)
-            json_receipe = generate_receipe_json(prompt)
+            json_receipe = generate_receipe_json(openai_client, prompt)
             create_receipe(json_receipe)
             clean_environment(metadata.get("audio_path"))
             await update.channel_post.reply_text(f"🥳 Receta subida a Mealie!")
