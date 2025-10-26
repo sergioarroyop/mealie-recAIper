@@ -32,10 +32,11 @@ def create_receipe(json_receipe: str) -> bool | None:
         )
         if resp.status_code != 201:
             logger.error(f"🙁 Error creating Mealie receipe:\n{resp.json()}\n{json_receipe}")
-            return True
-        else:
-            logger.info(f"🎉 Mealie receipe was successfully created! {MEALIE_API_URL}/g/home/r/{resp.json()}")
             return False
+        else:
+            receipe_url = f"{MEALIE_API_URL}/g/home/r/{resp.json()}"
+            logger.info(f"🎉 Mealie receipe was successfully created! {MEALIE_API_URL}/g/home/r/{resp.json()}")
+            return receipe_url
     except Exception as e:
         logger.error(f"❌ There was an issue creating mMeali receipe\n{e}")
         raise

@@ -42,8 +42,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             prompt = parse_prompt(metadata)
             json_receipe = generate_receipe_json(openai_client, prompt)
             create_receipe(json_receipe)
-            clean_environment(metadata.get("audio_path"))
-            await update.channel_post.reply_text(f"🥳 Receipe uploaded to Mealie!")
+            final_receipe_url = clean_environment(metadata.get("audio_path"))
+            await update.channel_post.reply_text(f"🥳 Receipe uploaded to Mealie! {final_receipe_url}")
         except Exception as e:
             logger.error(f"❌ Process error: {e}")
 
