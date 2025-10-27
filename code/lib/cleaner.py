@@ -1,7 +1,7 @@
-import logging
 from os import remove
+from lib.logger import logger as base_logger
 
-logger = logging.getLogger(__name__)
+logger = base_logger.getChild(__name__)
 
 def clean_environment(audio_file: str):
     try:

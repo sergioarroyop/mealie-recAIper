@@ -1,10 +1,11 @@
-import logging
-
 import whisper
 from elevenlabs import ElevenLabs
 from openai import OpenAI
 from telegram import Update
 from telegram.ext import Application
+from lib.logger import logger as base_logger
+
+logger = base_logger.getChild(__name__)
 
 from config.settings import (
     BOT_TOKEN,
@@ -13,11 +14,6 @@ from config.settings import (
     WHISPER_CONFIG,
 )
 from bot.router import setup_handlers
-
-logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
-
-logging.getLogger("httpx").setLevel(logging.WARNING)
-logger = logging.getLogger("Mealie-Reciper")
 
 def main():
     logger.info("Starting...")

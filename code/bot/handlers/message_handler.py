@@ -1,14 +1,14 @@
+import logging
 from telegram import Update
 from telegram.ext import ContextTypes
 from lib.ytlp import download_audio_from_url
 from lib.ai import whisper_audio, parse_prompt, generate_receipe_json, speech_to_text
 from lib.mealie import create_receipe
 from lib.cleaner import clean_environment
+from lib.logger import logger as base_logger
 from validators import url
 
-import logging
-
-logger = logging.getLogger(__name__)
+logger = base_logger.getChild(__name__)
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.channel_post.text.strip()
@@ -41,8 +41,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             metadata['transcription'] = transcription
             prompt = parse_prompt(metadata)
             json_receipe = generate_receipe_json(openai_client, prompt)
-            create_receipe(json_receipe)
-            final_receipe_url = clean_environment(metadata.get("audio_path"))
+            final_receipe_url = create_receipe(json_receipe)
+            clean_environment(metadata.get("audio_path"))
             await update.channel_post.reply_text(f"🥳 Receipe uploaded to Mealie! {final_receipe_url}")
         except Exception as e:
             logger.error(f"❌ Process error: {e}")

@@ -1,12 +1,13 @@
-import logging
 from typing import Any, Optional
 
 from elevenlabs import ElevenLabs
 from openai import OpenAI
 
+from lib.logger import logger as base_logger
+
 from config.settings import EXTRA_PROMPT
 
-logger = logging.getLogger(__name__)
+logger = base_logger.getChild(__name__)
 
 def speech_to_text(elevenlabs_client: Optional[ElevenLabs], downloaded_audio_path: str) -> str | None:
     try:

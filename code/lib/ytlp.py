@@ -1,9 +1,10 @@
 import yt_dlp
-import logging
 import os
+
+from lib.logger import logger as base_logger
 from config.settings import YLTP_CONFIG
 
-logger = logging.getLogger(__name__)
+logger = base_logger.getChild(__name__)
 
 def download_audio_from_url(url: str) -> dict | None:
     ydl_opts = {

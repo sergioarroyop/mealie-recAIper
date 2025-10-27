@@ -1,10 +1,12 @@
-import logging
+
 import requests
 import json
 
+from lib.logger import logger as base_logger
+
 from config.settings import MEALIE_API_URL, MEALIE_TOKEN
 
-logger = logging.getLogger(__name__)
+logger = base_logger.getChild(__name__)
 
 def create_receipe(json_receipe: str) -> bool | None:
     try:
